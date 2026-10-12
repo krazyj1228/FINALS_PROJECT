@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 170" fill="none">
+  <defs>
+    <linearGradient id="book" x1="15" y1="130" x2="93" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1266A5"/>
+      <stop offset="1" stop-color="#26B3B0"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="105" y1="36" x2="148" y2="135" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1CA8B2"/>
+      <stop offset=".62" stop-color="#187EA8"/>
+      <stop offset="1" stop-color="#1765A1"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="108" y1="119" x2="155" y2="91" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#35A96D"/>
+      <stop offset="1" stop-color="#67C64A"/>
+    </linearGradient>
+  </defs>
+  <path d="M87 145C68 124 44 114 17 111l20-66c21 3 38 14 51 33" stroke="url(#book)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82 136c-16-15-34-22-53-25l15-50c16 4 29 12 40 25" stroke="url(#book)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m111 24 31 18-10 14 28 39c8 12 5 26-7 34l-32 22c-11 8-26 3-31-9-3-7-2-15 2-22l28-46-15-10 6-10Z" stroke="url(#glass)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M98 116c17 0 30-11 47-29l14 20c5 8 2 17-6 22l-32 22c-10 7-22 4-28-5-5-8-3-20 5-30Z" fill="url(#leaf)"/>
+  <path d="M104 109c15-13 24-29 36-44l14 21c-18 22-32 38-53 43-6 1-10-2-10-7 0-5 5-10 13-13Z" fill="url(#glass)"/>
+  <circle cx="130" cy="55" r="4" fill="#39B579"/>
+</svg>
