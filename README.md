@@ -4,7 +4,7 @@ A Laravel portfolio generator with three responsive templates, public portfolio 
 
 ## Requirements
 
-- PHP 8.3 or newer with the PDO driver for your database
+- PHP 8.4.1 or newer with the PDO driver for your database
 - Composer
 - Node.js and npm
 
