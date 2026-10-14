@@ -14,7 +14,7 @@
     </header>
     <div class="modern-grid">
         <section class="modern-card modern-projects">
-            <div class="modern-section-heading"><h2>Selected projects</h2><span>{{ count($portfolio->projects ?? []) }} BUILDS</span></div>
+            <div class="modern-section-heading"><h2>Projects</h2><span>{{ count($portfolio->projects ?? []) }} BUILDS</span></div>
             @if ($portfolio->projects)
                 <div class="modern-project-grid">
                     @foreach ($portfolio->projects as $index => $item)
