@@ -14,7 +14,7 @@
             <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" required autofocus></div>
             <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
             <label class="auth-remember"><input type="checkbox" name="remember" value="1"> Remember me</label>
-            <button class="button auth-submit" type="submit">Log in <span aria-hidden="true">↗</span></button>
+            <button class="button auth-submit" type="submit">Log in</button>
         </form>
         <p class="auth-switch">New to FolioLab? <a href="{{ route('register') }}">Create an account</a></p>
     </section>

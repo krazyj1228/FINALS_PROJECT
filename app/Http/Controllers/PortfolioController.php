@@ -24,6 +24,38 @@ class PortfolioController extends Controller
         return view('home');
     }
 
+    public function previewTemplate(string $template): View
+    {
+        abort_unless(array_key_exists($template, self::TEMPLATES), 404);
+
+        $portfolio = new Portfolio([
+            'full_name' => 'Alex Morgan',
+            'email' => 'alex.morgan@example.com',
+            'contact_number' => '+1 (555) 014-2086',
+            'address' => 'Brooklyn, New York',
+            'about_me' => 'I am a product designer and front-end developer who enjoys turning complex ideas into thoughtful digital experiences.',
+            'education' => [
+                ['institution' => 'Parsons School of Design', 'degree' => 'BFA, Communication Design', 'year' => '2020'],
+            ],
+            'skills' => ['Product design', 'Prototyping', 'Laravel', 'Accessibility'],
+            'skill_levels' => [5, 4, 3, 5],
+            'projects' => [
+                ['title' => 'Fieldnotes', 'description' => 'A calmer way for small teams to capture research, share insights, and make better product decisions.'],
+                ['title' => 'Common Ground', 'description' => 'A neighborhood guide that helps people discover independent spaces and local events.'],
+            ],
+            'experience' => [
+                ['role' => 'Product Designer', 'company' => 'Northstar Studio', 'period' => '2022 — Present', 'description' => 'Partner with a small cross-functional team to shape accessible products from early research through launch.'],
+            ],
+            'template' => $template,
+        ]);
+        $avatarUrl = null;
+        $initials = 'AM';
+        $isTemplatePreview = true;
+        $isDemoPreview = true;
+
+        return view('portfolios.show', compact('portfolio', 'avatarUrl', 'initials', 'template', 'isTemplatePreview', 'isDemoPreview'));
+    }
+
     public function index(): View
     {
         $legacyPortfolioIds = session('portfolio_ids', []);
@@ -77,6 +109,18 @@ class PortfolioController extends Controller
             ->implode('');
 
         return view('portfolios.show', compact('portfolio', 'avatarUrl', 'initials'));
+    }
+
+    public function fullView(Portfolio $portfolio): View
+    {
+        $avatarUrl = $this->profileImageUrl($portfolio);
+        $initials = collect(explode(' ', $portfolio->full_name))
+            ->filter()
+            ->take(2)
+            ->map(fn (string $part): string => strtoupper(mb_substr($part, 0, 1)))
+            ->implode('');
+
+        return view('portfolios.full-view', compact('portfolio', 'avatarUrl', 'initials'));
     }
 
     public function edit(Portfolio $portfolio): View
@@ -138,6 +182,23 @@ class PortfolioController extends Controller
         $templates = self::TEMPLATES;
 
         return view('portfolios.templates', compact('portfolio', 'templates'));
+    }
+
+    public function previewPortfolioTemplate(Portfolio $portfolio, string $template): View
+    {
+        $this->authorizeOwner($portfolio);
+        abort_unless(array_key_exists($template, self::TEMPLATES), 404);
+
+        $avatarUrl = $this->profileImageUrl($portfolio);
+        $initials = collect(explode(' ', $portfolio->full_name))
+            ->filter()
+            ->take(2)
+            ->map(fn (string $part): string => strtoupper(mb_substr($part, 0, 1)))
+            ->implode('');
+        $isTemplatePreview = true;
+        $isDemoPreview = false;
+
+        return view('portfolios.show', compact('portfolio', 'avatarUrl', 'initials', 'template', 'isTemplatePreview', 'isDemoPreview'));
     }
 
     public function setTemplate(Request $request, Portfolio $portfolio): RedirectResponse

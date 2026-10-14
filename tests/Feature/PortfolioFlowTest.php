@@ -34,7 +34,10 @@ class PortfolioFlowTest extends TestCase
             ->assertOk()
             ->assertSee('src="https://foliolab.test/site-author.jpg"', false)
             ->assertSee('Jerold Cabanes')
-            ->assertSee('Creator of FolioLab');
+            ->assertSee('Creator of FolioLab')
+            ->assertSee(route('templates.preview', 'simple'), false)
+            ->assertSee(route('templates.preview', 'modern'), false)
+            ->assertSee(route('templates.preview', 'creative'), false);
     }
 
     public function test_portfolio_details_are_saved_and_template_selection_is_shown(): void
@@ -58,7 +61,10 @@ class PortfolioFlowTest extends TestCase
             ->assertOk()
             ->assertSee('Simple')
             ->assertSee('Modern')
-            ->assertSee('Creative');
+            ->assertSee('Creative')
+            ->assertSee(route('portfolios.templates.preview', [$portfolio, 'simple']), false)
+            ->assertSee(route('portfolios.templates.preview', [$portfolio, 'modern']), false)
+            ->assertSee(route('portfolios.templates.preview', [$portfolio, 'creative']), false);
 
         $this->get(route('portfolios.index'))
             ->assertOk()
@@ -85,7 +91,27 @@ class PortfolioFlowTest extends TestCase
             ->assertSee('Taylor Rivera')
             ->assertSee('Community garden')
             ->assertSee('4/5')
-            ->assertSee('2/5');
+            ->assertSee('2/5')
+            ->assertSee(route('portfolios.full-view', $portfolio), false);
+    }
+
+    public function test_full_view_renders_the_selected_template_without_dashboard_chrome(): void
+    {
+        $portfolio = Portfolio::factory()->create([
+            'full_name' => 'Taylor Rivera',
+            'about_me' => 'Designer who makes useful things.',
+            'template' => 'creative',
+        ]);
+
+        $this->get(route('portfolios.full-view', $portfolio))
+            ->assertOk()
+            ->assertSee('Taylor Rivera')
+            ->assertSee('Designer who makes useful things.')
+            ->assertSee('CREATIVE PORTFOLIO')
+            ->assertSee('href="/build/assets/', false)
+            ->assertDontSee('FolioLab')
+            ->assertDontSee('Copy link')
+            ->assertDontSee('My portfolios');
     }
 
     public function test_all_portfolio_templates_render_saved_details(): void
@@ -108,6 +134,39 @@ class PortfolioFlowTest extends TestCase
                 $response->assertSee('Cebu City')
                     ->assertDontSee('Portfolio · Cebu City');
             }
+        }
+    }
+
+    public function test_each_template_has_a_full_page_public_preview(): void
+    {
+        foreach (['simple', 'modern', 'creative'] as $template) {
+            $this->get(route('templates.preview', $template))
+                ->assertOk()
+                ->assertSee('Alex Morgan')
+                ->assertSee('Fieldnotes')
+                ->assertSee(ucfirst($template).' template preview')
+                ->assertSee('Create your portfolio');
+        }
+    }
+
+    public function test_owner_can_preview_each_template_without_changing_the_saved_template(): void
+    {
+        $user = User::factory()->create();
+        $portfolio = Portfolio::factory()->create([
+            'user_id' => $user->id,
+            'full_name' => 'Taylor Rivera',
+            'template' => 'simple',
+        ]);
+
+        foreach (['simple', 'modern', 'creative'] as $template) {
+            $this->actingAs($user)
+                ->get(route('portfolios.templates.preview', [$portfolio, $template]))
+                ->assertOk()
+                ->assertSee('Taylor Rivera')
+                ->assertSee(ucfirst($template).' template preview')
+                ->assertSee('Use this template');
+
+            $this->assertSame('simple', $portfolio->fresh()->template);
         }
     }
 
@@ -163,6 +222,8 @@ class PortfolioFlowTest extends TestCase
 
         $this->actingAs(User::factory()->create())
             ->get(route('portfolios.edit', $portfolio))
+            ->assertNotFound();
+        $this->get(route('portfolios.templates.preview', [$portfolio, 'modern']))
             ->assertNotFound();
         $this->delete(route('portfolios.destroy', $portfolio))->assertNotFound();
         $this->assertModelExists($portfolio);

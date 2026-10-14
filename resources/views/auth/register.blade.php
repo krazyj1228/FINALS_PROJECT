@@ -15,7 +15,7 @@
             <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" required></div>
             <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required><span class="field-hint">At least 8 characters</span></div>
             <div class="field"><label for="password_confirmation">Confirm password</label><input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" minlength="8" required></div>
-            <button class="button auth-submit" type="submit">Create account <span aria-hidden="true">↗</span></button>
+            <button class="button auth-submit" type="submit">Create account</button>
         </form>
         <p class="auth-switch">Already have an account? <a href="{{ route('login') }}">Log in</a></p>
     </section>

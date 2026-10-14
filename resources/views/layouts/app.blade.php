@@ -16,7 +16,7 @@
             <nav class="nav-links" aria-label="Main navigation">
                 @auth
                     <a class="nav-manage-link" href="{{ route('portfolios.index') }}">My portfolios</a>
-                    <a class="button button-small" href="{{ route('portfolios.create') }}">Create portfolio <span aria-hidden="true">↗</span></a>
+                    <a class="button button-small" href="{{ route('portfolios.create') }}">Create portfolio</a>
                     <span class="nav-user">{{ Auth::user()->name }}</span>
                     <form action="{{ route('logout') }}" method="post">@csrf<button class="nav-logout" type="submit">Log out</button></form>
                 @else

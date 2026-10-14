@@ -54,7 +54,7 @@
                     @empty<div class="repeater-row"><div class="field"><label>Link name</label><input name="social_links[0][label]" maxlength="60" placeholder="LinkedIn"></div><div class="field"><label>URL</label><input name="social_links[0][url]" type="url" maxlength="2048" placeholder="https://"></div><button class="row-remove" type="button" data-remove-row>Remove</button></div>@endforelse
                 </div><template><div class="repeater-row"><div class="field"><label>Link name</label><input name="social_links[__INDEX__][label]" maxlength="60" placeholder="LinkedIn"></div><div class="field"><label>URL</label><input name="social_links[__INDEX__][url]" type="url" maxlength="2048" placeholder="https://"></div><button class="row-remove" type="button" data-remove-row>Remove</button></div></template><button class="add-row" type="button" data-add-row>+ Add link</button></div>
             </section>
-            <div class="form-actions"><a class="button button-secondary" href="{{ $isEditing ? route('portfolios.index') : route('home') }}">Cancel</a><button class="button" type="submit">{{ $isEditing ? 'Save changes' : 'Save and choose a template' }} <span aria-hidden="true">↗</span></button></div>
+            <div class="form-actions"><a class="button button-secondary" href="{{ $isEditing ? route('portfolios.index') : route('home') }}">Cancel</a><button class="button" type="submit">{{ $isEditing ? 'Save changes' : 'Save and choose a template' }}</button></div>
         </div>
         <aside class="side-panel"><h3>How it works</h3><ol><li>Fill in the details you want to share</li><li>Save your information securely</li><li>Choose from three portfolio styles</li><li>Preview and share your public link</li></ol></aside>
     </form>
