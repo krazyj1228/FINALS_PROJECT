@@ -137,6 +137,34 @@ class PortfolioFlowTest extends TestCase
         }
     }
 
+    public function test_signed_in_portfolio_owner_sees_management_controls_without_a_portfolio_session(): void
+    {
+        $user = User::factory()->create();
+        $portfolio = Portfolio::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get(route('portfolios.show', $portfolio))
+            ->assertOk()
+            ->assertSee('Change template')
+            ->assertSee(route('portfolios.templates', $portfolio), false)
+            ->assertSee(route('portfolios.edit', $portfolio), false);
+    }
+
+    public function test_guests_and_other_users_do_not_see_portfolio_management_controls(): void
+    {
+        $owner = User::factory()->create();
+        $portfolio = Portfolio::factory()->create(['user_id' => $owner->id]);
+
+        $this->get(route('portfolios.show', $portfolio))
+            ->assertOk()
+            ->assertDontSee('Change template');
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('portfolios.show', $portfolio))
+            ->assertOk()
+            ->assertDontSee('Change template');
+    }
+
     public function test_each_template_has_a_full_page_public_preview(): void
     {
         foreach (['simple', 'modern', 'creative'] as $template) {
