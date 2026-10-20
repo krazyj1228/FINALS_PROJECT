@@ -71,6 +71,22 @@ class PortfolioFlowTest extends TestCase
             ->assertSee('Taylor Rivera');
     }
 
+    public function test_my_portfolios_navigation_is_active_only_on_the_portfolios_page(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('portfolios.index'))
+            ->assertOk()
+            ->assertSee('class="nav-manage-link is-active"', false)
+            ->assertSee('aria-current="page"', false);
+
+        $this->get(route('portfolios.create'))
+            ->assertOk()
+            ->assertDontSee('class="nav-manage-link is-active"', false)
+            ->assertDontSee('aria-current="page"', false);
+    }
+
     public function test_owner_can_select_a_template_and_retrieve_their_portfolio(): void
     {
         $portfolio = Portfolio::factory()->create([

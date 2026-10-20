@@ -3,7 +3,7 @@
 @section('title', 'My portfolios')
 
 @section('content')
-<main class="shell page-wrap">
+<main class="shell page-wrap portfolio-index">
     @if (session('status'))<div class="notice" role="status">{{ session('status') }}</div>@endif
     <div class="page-intro"><div><p class="eyebrow">Your workspace</p><h1 class="page-title display">My portfolios</h1><p>Keep your details current, choose a new look, or open a portfolio to share it.</p></div><a class="button" href="{{ route('portfolios.create') }}">Create portfolio</a></div>
     @if ($portfolios->isEmpty())

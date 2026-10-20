@@ -15,8 +15,7 @@
             <a class="brand" href="{{ route('home') }}"><img class="brand-mark" src="{{ asset('foliolab-mark.svg') }}" alt=""> FolioLab</a>
             <nav class="nav-links" aria-label="Main navigation">
                 @auth
-                    <a class="nav-manage-link" href="{{ route('portfolios.index') }}">My portfolios</a>
-                    <a class="button button-small" href="{{ route('portfolios.create') }}">Create portfolio</a>
+                    <a @class(['nav-manage-link', 'is-active' => request()->routeIs('portfolios.index')]) @if (request()->routeIs('portfolios.index')) aria-current="page" @endif href="{{ route('portfolios.index') }}">My portfolios</a>
                     <span class="nav-user">{{ Auth::user()->name }}</span>
                     <form action="{{ route('logout') }}" method="post">@csrf<button class="nav-logout" type="submit">Log out</button></form>
                 @else
