@@ -59,6 +59,8 @@ class PortfolioFlowTest extends TestCase
 
         $this->get(route('portfolios.templates', $portfolio))
             ->assertOk()
+            ->assertSee('Your portfolio is saved. Choose a look to continue.')
+            ->assertSee('data-auto-dismiss', false)
             ->assertSee('Simple')
             ->assertSee('Modern')
             ->assertSee('Creative')
@@ -104,6 +106,8 @@ class PortfolioFlowTest extends TestCase
         $this->assertDatabaseHas('portfolios', ['uuid' => $portfolio->uuid, 'template' => 'modern']);
         $this->get(route('portfolios.show', $portfolio))
             ->assertOk()
+            ->assertSee('Your portfolio is ready to share.')
+            ->assertSee('data-auto-dismiss', false)
             ->assertSee('Taylor Rivera')
             ->assertSee('Community garden')
             ->assertSee('4/5')

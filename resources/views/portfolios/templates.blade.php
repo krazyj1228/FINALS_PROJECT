@@ -2,7 +2,7 @@
 @section('title', 'Choose a template')
 @section('content')
 <main class="shell page-wrap">
-    @if (session('status'))<div class="notice" role="status">{{ session('status') }}</div>@endif
+    @if (session('status'))<div class="notice" role="status" data-auto-dismiss>{{ session('status') }}</div>@endif
     <div class="page-intro"><div><p class="eyebrow">Step 2 · Make it yours</p><h1 class="page-title display">Choose a template</h1><p>Pick a starting point. Your information stays the same, and you can switch styles whenever you like.</p></div><a class="text-link" href="{{ route('portfolios.edit', $portfolio) }}">← Edit your information</a></div>
     @if ($errors->any())<div class="error-box" role="alert">{{ $errors->first('template') }}</div>@endif
     <form action="{{ route('portfolios.template', $portfolio) }}" method="post">@csrf @method('PUT')

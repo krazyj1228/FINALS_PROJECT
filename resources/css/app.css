@@ -84,6 +84,7 @@ img { display: block; max-width: 100%; }
 .page-intro { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
 .page-intro p { max-width: 620px; margin: 9px 0 0; color: var(--muted); line-height: 1.6; }
 .notice { margin: 0 0 22px; padding: 13px 16px; border: 1px solid #cfe1c7; border-radius: 4px; background: #f0f7ed; color: #315d36; font-size: 14px; }
+.notice[data-auto-dismiss] { animation: notice-dismiss 0s 10s forwards; }
 .error-box { margin: 0 0 22px; padding: 14px 18px; border: 1px solid #e9bcb3; border-radius: 4px; background: #fff4f1; color: #873728; }
 .error-box ul { margin: 7px 0 0; padding-left: 19px; }
 .auth-page { display: grid; min-height: 68vh; place-items: start center; padding: 58px 20px 76px; background: radial-gradient(ellipse at 50% 0, #e5ebf2 0, #f5f6f8 62%); }
@@ -285,6 +286,7 @@ img { display: block; max-width: 100%; }
 .site-footer { padding: 20px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 @keyframes appear { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes float-in { from { opacity: 0; transform: translateY(14px) rotate(0); } to { opacity: 1; transform: translateY(0) rotate(1.5deg); } }
+@keyframes notice-dismiss { to { display: none; } }
 @keyframes creative-orbit { to { --creative-glow-angle: 1turn; } }
 @media (max-width: 780px) {
     .shell { width: min(100% - 32px, 600px); }

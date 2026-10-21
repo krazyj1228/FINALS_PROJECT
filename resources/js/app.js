@@ -36,3 +36,7 @@ document.querySelectorAll('[data-copy-url]').forEach((button) => {
 		window.setTimeout(() => { button.textContent = 'Copy link'; }, 1800);
 	});
 });
+
+document.querySelectorAll('[data-auto-dismiss]').forEach((notice) => {
+	window.setTimeout(() => { notice.remove(); }, 10000);
+});
