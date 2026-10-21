@@ -8,7 +8,8 @@
 
 :root { font-family: 'DM Sans', sans-serif; color: #1f1f1f; background: #f5f6f8; font-synthesis: none; text-rendering: optimizeLegibility; --ink: #1f1f1f; --muted: #626b75; --line: #dce2e8; --paper: #fff; --primary: #0a1a2f; --primary-dark: #142944; --secondary: #1f1f1f; --green: var(--primary); --green-dark: var(--primary-dark); --lime: #d7e2ef; --coral: #8195ad; --serif: 'Fraunces', Georgia, serif; }
 * { box-sizing: border-box; }
-body { min-width: 320px; margin: 0; }
+body { display: flex; min-width: 320px; min-height: 100vh; flex-direction: column; margin: 0; }
+body > main { flex: 1; }
 a { color: inherit; }
 button, input, textarea, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
