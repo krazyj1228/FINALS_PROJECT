@@ -101,8 +101,14 @@ img { display: block; max-width: 100%; }
 .form-panel, .side-panel { border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
 .form-panel { border-top: 4px solid var(--primary); }
 .form-panel { padding: 26px; }
-.form-section + .form-section { margin-top: 30px; padding-top: 27px; border-top: 1px solid #e9eee8; }
-.form-section h2 { margin: 0 0 5px; color: var(--secondary); font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; }
+.form-section + .form-section { margin-top: 18px; padding-top: 18px; border-top: 1px solid #e9eee8; }
+.form-section > summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; list-style: none; }
+.form-section > summary::-webkit-details-marker { display: none; }
+.form-section > summary::after { color: var(--green); content: '+'; font-size: 23px; line-height: 1; }
+.form-section[open] > summary::after { content: '−'; }
+.form-section > summary:focus-visible { border-radius: 3px; outline: 2px solid var(--primary); outline-offset: 4px; }
+.form-section h2 { margin: 0; color: var(--secondary); font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; }
+.form-section[open] > summary { margin-bottom: 5px; }
 .form-section > p { margin: 0 0 19px; color: var(--muted); font-size: 13px; }
 .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
 .field { min-width: 0; }

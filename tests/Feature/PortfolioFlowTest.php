@@ -89,6 +89,21 @@ class PortfolioFlowTest extends TestCase
             ->assertDontSee('aria-current="page"', false);
     }
 
+    public function test_portfolio_form_categories_are_collapsible_sections(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->get(route('portfolios.create'))
+            ->assertOk()
+            ->assertSee('<details class="form-section"', false)
+            ->assertSee('<summary><h2>Personal information</h2></summary>', false)
+            ->assertSee('<summary><h2>Education</h2></summary>', false)
+            ->assertSee('<summary><h2>Skills</h2></summary>', false)
+            ->assertSee('<summary><h2>Projects</h2></summary>', false)
+            ->assertSee('<summary><h2>Work experience</h2></summary>', false)
+            ->assertSee('<summary><h2>Social media &amp; links</h2></summary>', false)
+            ->assertDontSee('<details class="form-section" open', false);
+    }
+
     public function test_owner_can_select_a_template_and_retrieve_their_portfolio(): void
     {
         $portfolio = Portfolio::factory()->create([
@@ -289,6 +304,40 @@ class PortfolioFlowTest extends TestCase
             ]);
 
         $this->assertDatabaseCount('portfolios', 0);
+    }
+
+    public function test_identity_fields_reject_invalid_characters_when_creating_or_editing(): void
+    {
+        $user = User::factory()->create();
+        $invalidDetails = $this->portfolioDetails([
+            'full_name' => 'Taylor Rivera 2',
+            'contact_number' => '+1 555 CALL',
+        ]);
+
+        $this->actingAs($user)
+            ->from(route('portfolios.create'))
+            ->post(route('portfolios.store'), $invalidDetails)
+            ->assertRedirect(route('portfolios.create'))
+            ->assertSessionHasErrors(['full_name', 'contact_number']);
+
+        $this->assertDatabaseCount('portfolios', 0);
+
+        $portfolio = Portfolio::factory()->create([
+            'user_id' => $user->id,
+            'full_name' => 'Taylor Rivera',
+            'contact_number' => '+1 555 0182',
+        ]);
+
+        $this->from(route('portfolios.edit', $portfolio))
+            ->put(route('portfolios.update', $portfolio), $invalidDetails)
+            ->assertRedirect(route('portfolios.edit', $portfolio))
+            ->assertSessionHasErrors(['full_name', 'contact_number']);
+
+        $this->assertDatabaseHas('portfolios', [
+            'uuid' => $portfolio->uuid,
+            'full_name' => 'Taylor Rivera',
+            'contact_number' => '+1 555 0182',
+        ]);
     }
 
     public function test_skill_levels_outside_one_to_five_are_rejected(): void

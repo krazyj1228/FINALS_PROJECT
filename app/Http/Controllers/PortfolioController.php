@@ -217,10 +217,10 @@ class PortfolioController extends Controller
     private function portfolioRules(): array
     {
         return [
-            'full_name' => ['required', 'string', 'max:255'],
+            'full_name' => ['required', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s.\',’‐‑–-]+$/u'],
             'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'email' => ['required', 'email', 'max:255'],
-            'contact_number' => ['nullable', 'string', 'max:60'],
+            'contact_number' => ['nullable', 'string', 'max:60', 'regex:/^(?=.*\d)[0-9+(). -]+$/'],
             'address' => ['nullable', 'string', 'max:255'],
             'about_me' => ['nullable', 'string', 'max:5000'],
             'education' => ['nullable', 'array', 'max:12'],
