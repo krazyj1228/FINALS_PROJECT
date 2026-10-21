@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Portfolio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PortfolioFlowTest extends TestCase
@@ -246,6 +248,59 @@ class PortfolioFlowTest extends TestCase
         ])->get('/portfolios/'.$portfolio->uuid)
             ->assertOk()
             ->assertSee('src="https://foliolab.test/storage/portfolio-images/portrait.jpg"', false);
+    }
+
+    public function test_profile_photo_uploads_are_saved_on_create_and_edit(): void
+    {
+        Storage::fake('public');
+        config(['filesystems.portfolio_disk' => 'public']);
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('portfolios.store'), $this->portfolioDetails([
+                'profile_picture' => UploadedFile::fake()->createWithContent(
+                    'portrait.jpg',
+                    file_get_contents(public_path('site-author.jpg')),
+                ),
+            ]))
+            ->assertRedirect();
+
+        $portfolio = Portfolio::query()->firstOrFail();
+        $initialPath = $portfolio->profile_image_path;
+        $this->assertNotEmpty($initialPath);
+        Storage::disk('public')->assertExists($initialPath);
+
+        $this->actingAs($user)
+            ->put(route('portfolios.update', $portfolio), $this->portfolioDetails([
+                'profile_picture' => UploadedFile::fake()->createWithContent(
+                    'updated-portrait.jpg',
+                    file_get_contents(public_path('site-author.jpg')),
+                ),
+            ]))
+            ->assertRedirect(route('portfolios.show', $portfolio));
+
+        $updatedPath = $portfolio->fresh()->profile_image_path;
+        $this->assertNotEmpty($updatedPath);
+        $this->assertNotSame($initialPath, $updatedPath);
+        Storage::disk('public')->assertMissing($initialPath);
+        Storage::disk('public')->assertExists($updatedPath);
+    }
+
+    public function test_edit_form_explains_that_the_saved_photo_is_not_a_new_upload(): void
+    {
+        $user = User::factory()->create();
+        $portfolio = Portfolio::factory()->create([
+            'user_id' => $user->id,
+            'profile_image_path' => 'portfolio-images/portrait.jpg',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('portfolios.edit', $portfolio))
+            ->assertOk()
+            ->assertSee('Choose photo')
+            ->assertSee('A profile photo is saved. Choose a new photo to replace it.')
+            ->assertSee('class="file-input-hidden"', false)
+            ->assertSee('data-file-name role="status" aria-live="polite"', false);
     }
 
     public function test_owner_can_edit_and_delete_a_portfolio(): void

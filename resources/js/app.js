@@ -21,8 +21,10 @@ document.querySelectorAll('[data-avatar-input]').forEach((input) => {
 		const file = input.files?.[0];
 		if (!file) return;
 
-		const image = input.closest('.avatar-upload').querySelector('[data-avatar-preview]');
+		const upload = input.closest('.avatar-upload');
+		const image = upload.querySelector('[data-avatar-preview]');
 		const preview = image.querySelector('img') || document.createElement('img');
+		upload.querySelector('[data-file-name]').textContent = file.name;
 		preview.src = URL.createObjectURL(file);
 		preview.alt = 'Selected profile photo';
 		image.replaceChildren(preview);
